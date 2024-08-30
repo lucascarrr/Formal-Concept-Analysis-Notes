@@ -1,0 +1,113 @@
+% Load xcolor early with dvipsnames option
+\usepackage[dvipsnames]{xcolor}
+
+\usepackage[a4paper, margin=1in]{geometry} % Set margins to 0.5 inches on all sides
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{tikz}
+\usepackage{mathrsfs}
+\usetikzlibrary{patterns}
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{blindtext}
+\usepackage{titlesec}
+\usepackage{nimbusmononarrow}
+\usepackage{thmtools}
+\usepackage{mdframed}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode} % noend option omits the end keyword
+
+\def\sectionautorefname{Section} % needs to be capitalized according to LNCS guidelines
+\def\subsectionautorefname{Subsection} % needs to be capitalized according to LNCS guidelines
+\hypersetup{
+    colorlinks=true,
+    citecolor=black,
+    linkcolor=black,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+% Custom colors (more subtle)rgba(229, 229, 226, 1)
+\definecolor{definitioncolor}{RGB}{229, 229, 226}
+\definecolor{proofcolor}{RGB}{255,255,250}
+\definecolor{lemmacolor}{RGB}{250,255,250}
+\definecolor{theoremcolor}{RGB}{255,250,250}
+\definecolor{propositioncolor}{RGB}{250,255,255}
+\definecolor{remarkcolor}{RGB}{255,253,250}
+
+% Custom styles
+\newcommand{\customstyled}[3]{
+    \declaretheoremstyle[
+        headfont=\normalfont\bfseries,
+        bodyfont=#2,
+        mdframed={
+                linecolor=#1color,
+                linewidth=0pt,
+                backgroundcolor=#3,
+                innertopmargin=5pt,
+                innerbottommargin=5pt,
+                innerrightmargin=5pt,
+                innerleftmargin=5pt,
+                roundcorner=3pt,
+            },
+        headpunct={:},
+    ]{#1style}
+}
+
+\customstyled{definition}{\normalfont}{definitioncolor}
+\customstyled{proof}{\normalfont}{proofcolor}
+\customstyled{lemma}{\normalfont}{lemmacolor}
+\customstyled{theorem}{\normalfont\itshape}{theoremcolor}
+\customstyled{proposition}{\normalfont}{propositioncolor}
+\customstyled{remark}{\normalfont}{remarkcolor}
+
+% Declare theorem-like environments
+\declaretheorem[style=definitionstyle, name=Definition]{definition}
+\declaretheorem[style=proofstyle, name=Proof]{customproof}
+\declaretheorem[style=lemmastyle, name=Lemma]{lemma}
+\declaretheorem[style=theoremstyle, name=Theorem]{theorem}
+\declaretheorem[style=propositionstyle, name=Proposition]{proposition}
+\declaretheorem[style=remarkstyle, name=Remark]{remark}
+
+% Additional useful environments
+\declaretheorem[style=theoremstyle, name=Corollary]{corollary}
+\declaretheorem[style=definitionstyle, name=Example]{example}
+\declaretheorem[style=remarkstyle, name=Note]{note}
+
+% Redefine the proof environment
+\renewenvironment{proof}{\begin{customproof}}{\end{customproof}}
+
+% Optional: Custom symbols for end of proof, remark, etc.
+\renewcommand{\qedsymbol}{$\blacksquare$}
+\newcommand{\remarkqed}{\hfill$\diamond$}
+
+% Define custom style for algorithms
+\newcommand{\customalgorithmstyled}[1]{
+    \declaretheoremstyle[
+        headfont=\normalfont\bfseries,
+        bodyfont=\normalfont,
+        mdframed={
+                linecolor=black,
+                linewidth=0.5pt,
+                backgroundcolor=#1,
+                innertopmargin=5pt,
+                innerbottommargin=5pt,
+                innerrightmargin=5pt,
+                innerleftmargin=5pt,
+                roundcorner=3pt,
+            },
+        headpunct={:},
+        spaceabove=\baselineskip,
+        spacebelow=\baselineskip,
+    ]{algorithmstyle}
+}
+
+
+% Set the color for the algorithm environment
+\customalgorithmstyled{proofcolor}
+
+% Define custom commands for algorithmic
+\algrenewcommand\algorithmicrequire{\textbf{Input:}} % Rename 'Require' to 'Input'
+\algrenewcommand\algorithmicensure{\textbf{Output:}} % Rename 'Ensure' to 'Output'
+\renewcommand{\algorithmiccomment}[1]{\hfill\(\triangleright\) \textit{#1}} % Style for comments

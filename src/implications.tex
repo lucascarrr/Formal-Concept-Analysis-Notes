@@ -1,0 +1,55 @@
+\section{Implications and Rankings}
+\label{Section: Impl}
+
+\subsection{Implications}
+\label{subsec: Implications}
+
+\subsection{Rankings}
+\label{subsec: Ranking}
+
+\subsubsection{Pearl}
+\label{rankings| pearl}
+\begin{quote}
+    The following may, at times, be entirely plagiarised from \cite{Pearl_SystemZ}. It is for my own understanding.
+\end{quote}
+% Instead of writing implications over a set of attributes as $\A \rightarrow \B$, we turn to a new notation where the same implication is given by $({\B \mid \A})$. 
+%
+Consider a set of rules $R = \{r:{\A_r \rightarrow \B_r}\}$ where $\A_r$ and $\B_r$ are sets of attributes and $\rightarrow$ is the normal attribute implication. In a classical sense, this implication is respected by another set of attributes, $\Y$, in case ${\A} \not \subseteq \Y$ or ${\B} \subseteq \Y$. A stronger notion is that $\Y$ \textit{verifies} ${\A} \rightarrow {\B}$ when ${\A} \cup {\B} \subseteq \Y$. This is enforcing an intuitive understanding of conditionals, where the antecedent \textit{must} be true - we avoid vacuous truths of implications. \cite{Pearl_SystemZ} Conversely, $\Y$ is said to falsify ${\A} \rightarrow {\B}$ when ${\A} \subseteq \Y$ and ${\B} \not \subseteq \Y$.
+
+A new notion of \textit{toleration} is introduced in the form of a \textit{toleration relation}:
+%
+\begin{definition}
+    A set of rules $R' \subseteq R$ \textit{tolerates} an individual rule $r$, denoted $T(r\mid R')$, if \[\bigcup\limits_{r' \in R'} ({\A_r' \cup \B_r'}) \cup \{{\A_r \cup \B_r}\}\] is satisfiable.
+\end{definition}
+%
+What it means for an individual rule, $r$, to be tolerated by a set of rules $R'$ is that there should be a model of $R'$ which verifies $r$ and does not falsify any $r' \in R'$. Shifting into the world of formal concept analysis: an implication, $i$, is tolerated by a set of implications $I$ if there is an object $g$ such that $g'$ respects $I$ and $g'$ verifies $i$.
+
+The next notion to be introduced is \textit{consistency},
+\begin{definition}
+    A set $R$ of rules is \textit{consistent} if in every non-empty subset $R' \subseteq R$ there exists an $r'$ such that $R'$ tolerates $r'$.
+\end{definition}
+%
+\begin{align}
+    \forall \; R' \subseteq R, \; \exists \; r' \in R', \text{ such that } \; T(r'\mid R' - r')
+\end{align}
+
+Consistency is stronger than satisfiability: $\alpha \rightarrow \beta$ and $\alpha \rightarrow \neg \beta$ is satisfiable by $\neg \alpha$, although it is not consistent. Any $\omega$ that verifies $\alpha \rightarrow \neg \beta$ necessarily falsifies $\alpha \rightarrow \beta$ and vice versa. Implicit in the notion of consistency is that implications which are only ever true through negation of the antecedent do not align with our understanding of conditonals. \cite{Pearl_SystemZ}
+
+
+Consistency gives rise to a natural ordering of the rules in $R$. Given a consistent $R$, identify every rule that is tolerated by $R$, and assign this rule a rank of $0$.
+
+\begin{algorithm}
+    \caption{Z-ordering}
+    \begin{algorithmic}[1]
+        \Require A consistent set of rules $R$
+        \Require A tolerance relation $T$ over $R$
+        \Ensure A tolerance partition $R_Z = (R_0, R_1, \ldots, R_k)$
+        \State $i:= 0$;
+        \While{R $\not = \emptyset$}
+        \State $R_i := \{r \in R \mid (r\mid R) \in T\}$;
+        \State $R = R \setminus R_i$;
+        \State $i := i + 1$;
+        \EndWhile
+        \State \Return $(R_0, R_1, \ldots, R_i)$
+    \end{algorithmic}
+\end{algorithm}

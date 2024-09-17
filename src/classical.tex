@@ -1,0 +1,28 @@
+\section{Classical Consequence Relations}
+\label{section: consequence relations}
+%
+In classical logic, the notion of \emph{logical consequence} describes when one formula allows one to conclude another. If $\alpha, \beta \in \mathcal{L}$ are two formulae in the language, then $\alpha \vDash \beta$ iff for every valuation $u \in \mathcal{U}$ if $u \Vdash \alpha$ then $u \Vdash \beta$, equivalently that the models of $\alpha$ are a subset of the models of $\beta$. We can similarly define a notion of \emph{classical entailment} which describes when a formula is a logical consequence of set of formulae, or a knowledge-base.
+%
+\begin{definition}
+    \label{definition: logical consequence}
+    We say that for two formulae, $\alpha, \beta$, in the language $\mathcal{L}$, $\beta$ is a \emph{logical consequence} of $\alpha$, written $\alpha \vDash \beta$ iff for every valuation $u \in \mathcal{U}$ where $u \Vdash \alpha$ then also $u \Vdash \beta$.
+\end{definition}
+%
+\begin{definition}
+    \label{defintion: classical entailment}
+    Given a knowledge-base $\mathcal{K}$ and a formula $\alpha$, the knowledge-base entails $\alpha$, written $\mathcal{K} \models \alpha$, iff every for every valuation $u \in \mathcal{U}$ where $u \Vdash \mathcal{K}$ it is also the case that $u \Vdash \alpha$.
+\end{definition}
+%
+We introduce a consequence operator, $\mathcal{C}n$, where $\mathcal{C}n(\mathcal{K})$ describes a closed-set containing everything that can be entailed from $\mathcal{K}$. With this in mind, any notion of consequence which satisfies the condtions below is referred to as a \emph{Tarskian operation}.
+\begin{enumerate}
+    \item Monotonocity: \textit{if $\mathcal{K} \subseteq \mathcal{K'}$ then $\mathcal{C}n(\mathcal{K}) \subseteq \mathcal{C}n(\mathcal{K'})$}
+    \item Idempotence: $\mathcal{C}n(\mathcal{K}) = \mathcal{C}n(\mathcal{C}n(\mathcal{K}))$
+    \item Inclusion: $\mathcal{K} \subseteq \mathcal{C}n(\mathcal{K})$
+\end{enumerate}
+%
+\emph{Consequence relations} are a more removed way of describing some notion of logical consequence. These relations are a (possibly infinite) set of ordered pairs containing formulae in the language, where the first element is the antecedent and the second element is the consequent. A consequence relation might look like $\{(\alpha_0, \beta_0), \ldots, (\alpha_n, \beta_n)\ldots\}$. The relation does not give a semantic or syntactic notion of consequence. Rather, a consequence relation satisfies certain properties which describe some pattern of reasoning - as such, a consequence relation might be a characterisation of some notion of consequence. Obviously, not all sets of pairs would define a meaningful pattern of reasoning. At a minimum, a meaningful consequence relation, $\Gamma$, should satisfy
+%
+\begin{enumerate}
+    \item Reflexivity: $(\alpha, \alpha) \in \Gamma$
+    \item Cut: \textit{if $(\alpha, \beta \land \gamma) \in \Gamma$ and $(\gamma \land \delta, \mu)\in \Gamma$ then $(\alpha \land \delta, \beta \land \mu)\in \Gamma$}
+\end{enumerate}

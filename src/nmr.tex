@@ -1,0 +1,17 @@
+\section{Non-monotonic Reasoning}
+\label{section—nmr}
+The discussion in \autoref{section: consequence relations} included, but did not pay any attention to the monotonic property of classical logic. In some sense, what monotonicity enforces is that if $x$ leads to $y$, then $x$ and $z$ should continue to lead to $y$. More plainly, inferences that are made should never be invalidated by additional information. \cite{Kaliski:2020,Pearl:1990} In the language of propositional logic, let \texttt{mammal,platypus,laysEggs} be propositions. We might expect to be able to express the following:
+\begin{alignat}{3}
+     & \texttt{mammal}   & {} \rightarrow{} & {} \neg \texttt{laysEggs} \\
+     & \texttt{platypus} & {} \rightarrow{} & {} \texttt{mammal}        \\
+     & \texttt{platypus} & {} \rightarrow{} & {} \texttt{laysEggs}
+\end{alignat}
+%
+The cause for concern is that in any valuation $u \in \mathcal{U}$ where $u \Vdash \texttt{platypus}$, it should also be the case $u \Vdash \texttt{laysEggs}$ and $u \Vdash \texttt{mammal}$ by ($2,3$). Then from ($1$) that $u \Vdash \neg\texttt{laysEggs}$. However, a valuation is a truth assignment to propositions - we cannot have that a proposition be both \emph{true} and \emph{false}. Consequently, there can be no valuations which satisfy all three formulae where \texttt{platypus} is \emph{true}.
+
+It is quite clear that any ``system'' capable of complex reasoning would not be monotonic. There are several distinct approaches which formalise notions of non-monotonic reasoning. However, the objective of this work is to develop a notion of non-monotonicity in formal concept analysis - as such, we restrict ourselves to look at rational consequence, introduced in \cite{Kaliski:2020,lehmann:2002,Pearl:1990}. As we progress, the reasons for this choice should become apparent.
+
+\subsection{Rational Consequence Relations}
+\label{subsection: preferential reasoning}
+
+Rational consequence

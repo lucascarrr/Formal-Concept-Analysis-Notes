@@ -1,20 +1,56 @@
 \section{Implications and Rankings}
 \label{Section: Impl}
+It is not immediately obvious how the pairing of non-monotonic reasoning and FCA may manifest. FCA generally involves a starting point of a \textit{formal context}, and discovering implications (\textit{rules}) which ``agree'' with the context. In a sense, we have a single \textit{model}. In contrast, a more classical approach to non-monotonic reasoning begins with a collection of rules—a knowledge base—which may have many  ``models'', with the aim of determining what else might follow.
+
+We suggest a, perhaps blunt, approach to introduce non-monotonicity into FCA where the formal context is supplied with an additional collection of (defeasible) rules.
 
 \subsection{Implications}
 \label{subsec: Implications}
+Implications in FCA express total correspondence between different sets of attributes. Going forward, whenever an implication is discussed within the setting of FCA, the reader should assume that the antecedent and consequent are only ever sets of attributes.
 
+\begin{definition}
+    \label{definition: fca-implication semantics}
+    In a formal context $\FC$, an implication $\A \rightarrow \B$ is \textit{respected} by a set of attributes $\C$ iff $\A \not\subseteq \C$ or $\B \subseteq \C$, this is denoted $\C \Vdash \A \rightarrow \B$. Then, the implication is respected by the formal context, $\K \models \A \rightarrow \B$, iff for all objects $g \in G$ it is the case that $g' \models \A \rightarrow \B$. This latter condition is equivalent to:
+    \begin{flushleft}
+        \begin{enumerate}[label=(\roman*)]
+            \item \centering $\A' \subseteq \B'$
+            \item \centering $\B \subseteq \A''$
+        \end{enumerate}
+    \end{flushleft}
+\end{definition}
+
+If object intents are regarded as a kind of interpretation (we will make this notion more concrete later on), then it becomes apparent that FCA-style implications are similar to the notion of \textit{logical consequence}. In fact, they satisfy the requirements to be a characterisation of a Tarskian logical consequence. \cite{Kaliski:2020} When a formal context respects an implication, it is really a notion of \textit{entailment}. The formal context encodes all the information we know about the object-level, and implications are discovered relationships which are consistent with this information. As such, all that an implication tells us is that the relationship between attribute sets described by $\A \rightarrow \B$ (with an understanding of the semantics of $\rightarrow$) is consistent with the information we have in our formal context. We are interested in a restricted form of these implications, where \textit{vacuous agreement} is done away with.
+
+Our aim is to formalise a conditional relation between sets of attributes which should be interpreted as saying, attributes $\A$ \textit{usually} correspond to attributes $\B$ - or, that objects with $\A$ usually also have $\B$. We denote this conditional by $(\B \mid \A)$.
+%
 \subsection{Rankings}
 \label{subsec: Ranking}
+%
+\begin{definition}
+    \label{definition—verifies—fca}
+    Given a defeasible implication $(\B \mid \A)$, a set of attributes $\C$ \emph{verifies} the implication iff $\A \cup \B \subseteq \C$. A set $\C$ is said to \textit{falsify} the implication iff $\A \subseteq \C$ and $\B \not\subseteq \C$.
+\end{definition}
+%
+\begin{definition}
+    \label{definition—tolerates—fca}
+    Given a formal context $\FC$, a set of defeasible implications $\Delta$, and an implication $\delta \in \Delta$, $\Delta$ tolerates $\delta$, denoted $T(\delta \mid \Delta)$, iff there exists some $g \in G$ such that $g'$ verifies $\delta$ and $g' \models \Delta$. $T$ defines a toleration relation.
+\end{definition}
+%
+\begin{definition}
+    \label{definition—consistent—fca}
+    A set $\Delta$ of defeasible implications is \emph{consistent} if, for every non-empty subset $\Delta' \subseteq \Delta$, there is at least one $\delta \in \Delta'$ that is tolerated by $\Delta'$. That is,
 
+    \[\forall \Delta' \subseteq \Delta,\; \exists \delta \in \Delta' \text{ such that } T(\delta \mid \Delta'\setminus \delta) \]
+\end{definition}
+%
 \subsubsection{Pearl}
 \label{rankings| pearl}
 \begin{quote}
-    The following may, at times, be entirely plagiarised from \cite{Pearl_SystemZ}. It is for my own understanding.
+    The following may, at times, be entirely plagiarised from \cite{Pearl:1990}. It is for my own understanding.
 \end{quote}
 % Instead of writing implications over a set of attributes as $\A \rightarrow \B$, we turn to a new notation where the same implication is given by $({\B \mid \A})$. 
 %
-Consider a set of rules $R = \{r:{\A_r \rightarrow \B_r}\}$ where $\A_r$ and $\B_r$ are sets of attributes and $\rightarrow$ is the normal attribute implication. In a classical sense, this implication is respected by another set of attributes, $\Y$, in case ${\A} \not \subseteq \Y$ or ${\B} \subseteq \Y$. A stronger notion is that $\Y$ \textit{verifies} ${\A} \rightarrow {\B}$ when ${\A} \cup {\B} \subseteq \Y$. This is enforcing an intuitive understanding of conditionals, where the antecedent \textit{must} be true - we avoid vacuous truths of implications. \cite{Pearl_SystemZ} Conversely, $\Y$ is said to falsify ${\A} \rightarrow {\B}$ when ${\A} \subseteq \Y$ and ${\B} \not \subseteq \Y$.
+Consider a set of rules $R = \{r:{\A_r \rightarrow \B_r}\}$ where $\A_r$ and $\B_r$ are sets of attributes and $\rightarrow$ is the normal attribute implication. In a classical sense, this implication is respected by another set of attributes, $\Y$, in case ${\A} \not \subseteq \Y$ or ${\B} \subseteq \Y$. A stronger notion is that $\Y$ \textit{verifies} ${\A} \rightarrow {\B}$ when ${\A} \cup {\B} \subseteq \Y$. This is enforcing an intuitive understanding of conditionals, where the antecedent \textit{must} be true - we avoid vacuous truths of implications. \cite{Pearl:1990} Conversely, $\Y$ is said to falsify ${\A} \rightarrow {\B}$ when ${\A} \subseteq \Y$ and ${\B} \not \subseteq \Y$.
 
 A new notion of \textit{toleration} is introduced in the form of a \textit{toleration relation}:
 %
@@ -33,23 +69,35 @@ The next notion to be introduced is \textit{consistency},
     \forall \; R' \subseteq R, \; \exists \; r' \in R', \text{ such that } \; T(r'\mid R' - r')
 \end{align}
 
-Consistency is stronger than satisfiability: $\alpha \rightarrow \beta$ and $\alpha \rightarrow \neg \beta$ is satisfiable by $\neg \alpha$, although it is not consistent. Any $\omega$ that verifies $\alpha \rightarrow \neg \beta$ necessarily falsifies $\alpha \rightarrow \beta$ and vice versa. Implicit in the notion of consistency is that implications which are only ever true through negation of the antecedent do not align with our understanding of conditonals. \cite{Pearl_SystemZ}
+Consistency is stronger than satisfiability: $\alpha \rightarrow \beta$ and $\alpha \rightarrow \neg \beta$ is satisfiable by $\neg \alpha$, although it is not consistent. Any $\omega$ that verifies $\alpha \rightarrow \neg \beta$ necessarily falsifies $\alpha \rightarrow \beta$ and vice versa. Implicit in the notion of consistency is that implications which are only ever true through negation of the antecedent do not align with our understanding of conditonals. \cite{Pearl:1990}
 
 
 Consistency gives rise to a natural ordering of the rules in $R$. Given a consistent $R$, identify every rule that is tolerated by $R$, and assign this rule a rank of $0$.
 
+
+\subsection{Z-ordering on Formal Contexts}
+\label{Ordering on objects}
+The algorithm to determine the Z-order of a set of implications \textit{(rules)} can be translated to a formal concept analysis setting.
+
 \begin{algorithm}
-    \caption{Z-ordering}
     \begin{algorithmic}[1]
-        \Require A consistent set of rules $R$
-        \Require A tolerance relation $T$ over $R$
-        \Ensure A tolerance partition $R_Z = (R_0, R_1, \ldots, R_k)$
-        \State $i:= 0$;
-        \While{R $\not = \emptyset$}
-        \State $R_i := \{r \in R \mid (r\mid R) \in T\}$;
-        \State $R = R \setminus R_i$;
-        \State $i := i + 1$;
+        \caption{Partitioning of $G$ using Defeasible Implications}
+        \Require A formal context $K = (G,M,I)$ and a set of (defeasible) implications $\Delta$
+        \Ensure A partition on $G$
+        \State $P_0 \gets G$;
+        \State $i \gets 0$
+        \While{$P_{i-1} \neq P_i $}
+        \State $P_{i+1} \gets \{g \in P_i \mid \exists \delta \in \Delta \st g' \not \Vdash \delta \}$; \hfill \textit{These are the objects with rank $> i$}
+        \State $P_i \gets P_i \setminus P_{i+1}$; \hfill \textit{Now $P_i$ contains correct objects}
+        \State $\Delta_i \gets \{(\A \rightarrow \B) \in \Delta \mid \exists g \in P_i \st \A \subseteq g'\}$; \hfill \textit{$\Delta_i$ contains the rules dealt with on rank $i$}
+        \State $\Delta \gets \Delta \setminus \Delta_i$; \hfill \textit{Future partitions don't need to satisfy $\Delta_i$}
+        \State $i \gets i+1$;
         \EndWhile
-        \State \Return $(R_0, R_1, \ldots, R_i)$
+        \If{$P_{i-1} = \emptyset$}
+        \State $n \gets i-1$;
+        \Else
+        \State $n \gets i$;
+        \EndIf
+        \State \Return $\big(P_0,\ldots, P_n\big)$
     \end{algorithmic}
 \end{algorithm}

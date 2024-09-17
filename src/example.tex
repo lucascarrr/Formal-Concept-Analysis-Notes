@@ -1,0 +1,97 @@
+\section{Example}
+\label{section: example}
+For a (perhaps) lengthy example, consider a dataset of animal species and some of their attributes. We obviously have existing expert domain knowledge, which we represent as the set of defeasible rules $\Delta$ - we could in future investigate including non-defeasible rules as a method of reducing noise. Given the formal context $\K$ and the set of rules $\Delta$, we use the Object Rank algorithm to determine an order for objects.
+
+\begin{equation*}
+    \Delta := \left\{
+    \begin{aligned}
+         & \texttt{Aves}    &  & \rightsquigarrow &  & \texttt{Aerial}    \\
+         & \texttt{Mammal}  &  & \rightsquigarrow &  & \neg\texttt{Eggs}  \\
+         & \texttt{Reptile} &  & \rightsquigarrow &  & \texttt{Solitary}  \\
+         & \texttt{Aquatic} &  & \rightsquigarrow &  & \texttt{Eggs}      \\
+         & \texttt{Aerial}  &  & \rightsquigarrow &  & \texttt{Migratory} \\
+    \end{aligned}
+    \right.
+\end{equation*}
+
+\begin{small}
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{r|c c c c c c c c c c }
+                               & \texttt{ Aves } & \texttt{ Mammal } & \texttt{ Reptile } & \texttt{ Aerial } & \texttt{ Aquatic } & \texttt{ Terrestrial } & \texttt{ Migratory } & \texttt{ Solitary } & \texttt{ Carnivore } & \texttt{ Eggs } \\
+            \hline
+            \texttt{Bat}       &                 & $\times$          &                    & $\times$          &                    &                        &                      &                     & $\times$             &                 \\
+            \texttt{Crocodile} &                 &                   & $\times$           &                   & $\times$           & $\times$               &                      &                     & $\times$             & $\times$        \\
+            \texttt{Crow}      & $\times$        &                   &                    & $\times$          &                    &                        &                      &                     &                      & $\times$        \\
+            \texttt{Hippo}     &                 & $\times$          &                    &                   & $\times$           & $\times$               &                      & $\times$            &                      &                 \\
+            \texttt{Ostrich}   & $\times$        &                   &                    &                   &                    & $\times$               &                      & $\times$            &                      & $\times$        \\
+            \texttt{Penguin}   & $\times$        &                   &                    &                   & $\times$           & $\times$               & $\times$             &                     & $\times$             & $\times$        \\
+            \texttt{Platypus}  &                 & $\times$          &                    &                   & $\times$           & $\times$               &                      & $\times$            & $\times$             & $\times$        \\
+            \texttt{Snake}     &                 &                   & $\times$           &                   &                    & $\times$               &                      & $\times$            & $\times$             & $\times$        \\
+            \texttt{Swallow}   & $\times$        &                   &                    & $\times$          &                    &                        & $\times$             & $\times$            & $\times$             & $\times$        \\
+            \texttt{Whale}     &                 & $\times$          &                    &                   & $\times$           &                        & $\times$             & $\times$            & $\times$             &                 \\
+        \end{tabular}
+        \caption{Cross-table of $\K$}
+        \label{tab:formal-context}
+    \end{table}
+\end{small}
+
+The algorithm partitions the objects into:
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Rank} & \textbf{Objects}                                \\
+        \hline
+        3             & \texttt{Platypus}                               \\
+        \hline
+        2             & \texttt{Hippo, Whale}                           \\
+        \hline
+        1             & \texttt{Bat, Crocodile, Crow, Ostrich, Penguin} \\
+        \hline
+        0             & \texttt{Snake, Swallow}                         \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+
+What if there is a rule $\delta: (a \rightarrow b) \in \Delta$ such that there is no object $g \in G$ with $a \subseteq g$? - Well, this rule tells us nothing, and we can discard it. If typical objects that have $x$ also have $y$ but there are no objects which have $x$, then this rule means nothing to us.
+
+What do we do with the the objects that arent
+
+\begin{table}
+    \centering
+    \begin{tabular}{r|cccc}
+                       & \texttt{Republican} & \texttt{Quaker} & \texttt{Pacifist} \\
+        \hline
+        \texttt{Nixon} & $\times$            & $\times$        & $\times$          \\
+        \texttt{Bush}  & $\times$            &                 &                   \\
+        \texttt{Fox}   &                     & $\times$        & $\times$          \\
+    \end{tabular}
+    \caption{Formal Context for Nixon Diamond}
+    \label{tab:nixon-diamond}
+\end{table}
+
+\begin{equation*}
+    \Delta := \left\{
+    \begin{aligned}
+         & \texttt{Republican} &  & \rightsquigarrow &  & \neg\texttt{Pacifist} \\
+         & \texttt{Quaker}     &  & \rightsquigarrow &  & \texttt{Pacifist}     \\
+    \end{aligned}
+    \right.
+\end{equation*}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Rank} & \textbf{Objects}   \\
+        \hline
+        1             & \texttt{Nixon}     \\
+        \hline
+        0             & \texttt{Bush, Fox} \\
+        \hline
+    \end{tabular}
+\end{table}

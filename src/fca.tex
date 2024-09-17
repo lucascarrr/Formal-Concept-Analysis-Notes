@@ -1,0 +1,45 @@
+\section{Formal Concept Analysis}
+\label{section—fca}
+
+Formal concept analysis (FCA) is a mathematical framework used to study the relationships between \textit{objects} and their \textit{attributes}. The basic setting is a \textit{formal context}, $\FC$, where $\G$ is a finite set of objects, $\M$ is a finite set of attributes, and $\I \subseteq \G \times \M$ an incidence relation describing when an object `has' an attribute. In reasonably sized instances, a formal context can be represented as a cross table, where rows correspondence to objects, columns to attributes, and a marker ($\times$) to the incidence relation. \cite{Ganter:2004,Ganter:2016,Wille:1996}
+
+Two \textit{derivation operators} are defined for sets of objects and sets of attributes, respectively. These operators - denoted with $(\uparrow, \downarrow)$ or simply $(')$ - introduce an order-reversing Galois connection between $\mathcal{P}(\G)$ and $\mathcal{P}(\M)$.
+%
+\begin{definition}
+    \label{definition derivation-operators}
+    In a formal context, $\FC$, for $\A \subseteq \G$ and $\B \subseteq \M$
+    \begin{align}
+        \A' & := \{m \in M \mid \forall g \in \A \; (g,m) \in I\} \\
+        \B' & := \{g \in G \mid \forall m \in \B \; (g,m) \in I\}
+    \end{align}
+\end{definition}
+%
+\begin{proposition}
+    \label{propistion: properties of derivation operators}
+    Let $\FC$ be a formal context, for $\A_1, \A_2, \A_3 \subseteq \G$, and $\B \subseteq \M$, we have
+    \begin{align}
+        \A_1 \subseteq \A_2 \text{ iff } \A_2' \subseteq \A_1' \\
+        \A_1 \subseteq \A_1''                                  \\
+        \A_1 = \A_1'''                                         \\
+        (\A_1 \cup \A_2)' = \A_1' \cap \A_2'                   \\
+        \A \subseteq \B' \Leftrightarrow \B \subseteq \A' \Leftrightarrow \A \times \B \subseteq I
+    \end{align}
+\end{proposition}
+
+\subsection{Implications}
+\label{section: fca, subsection: implications}
+Implications in FCA are a way of describing correspondencies between sets of attributes in a given formal context. Generally, implications are restricted to the language of attribute logic - there is no good intuition for what it might mean to talk about implications between the objects of a formal context.
+%
+\begin{definition}
+    \label{definition: respected implication}
+    Given two sets of attributes $\A, \B \subseteq \M$, the implication $\A \rightarrow \B$ is \emph{respected} by another set of attributes $\C \subseteq \M$ iff $\A \not \subseteq \C$ or $\B \subseteq \C$. In this case we say $\C \vDash \A \rightarrow \B$.
+\end{definition}
+%
+Each object in a formal context has an \textit{object intent} - the set of attributes belonging to that object. This notion is used to define what it means for a formal context to respect an implication.
+%
+\begin{definition}
+    \label{definition: valid implication}
+    Given a formal context $\FC$ and an implication $\A \rightarrow \B$ over $\M$, the implication is \emph{valid} in $\K$ iff for every $g \in \G$, $g' \vdash \A \rightarrow \B$. Then we say $\K \models \A \rightarrow \B$. This is equivalent to: \[\A' \subseteq \B' \Leftrightarrow \B \subseteq \A''\]
+\end{definition}
+%
+At this point the reason for looking into preferential reasoning might be clearer. Implications are analagous to the logical consequence in \autoref{definition: logical consequence}. Then, a formal context respecting an implication continues the analogy, mirroring classical entailment defined in \autoref{defintion: classical entailment}. To this end, we view object intents as valuations. We should, however, abandon the intuition of valuations as \textit{possible worlds}. Rather, they represent existing objects.
